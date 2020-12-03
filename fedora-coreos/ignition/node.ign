@@ -1,0 +1,59 @@
+{
+  "ignition": {
+    "version": "3.1.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "sudo",
+          "wheel",
+          "docker"
+        ],
+        "name": "dabos",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIuNlHCCz2HHd+Uh0SrUGFgVcr4kG/t9BTdsIPpf/n6AvLKFFBobdBypJNuzLURFTBts2on7NdxTG8oldWshhQHUjeYnZW17qBto87kANHDT8w2/02JoWMbLmuek9xsMtPMwEDo/AFQPj6tOfFA39SvR/t7p3puAbgN5yYrCoFgVFgrT2elPYErOvlNcyQyNJcrDGmXNpndm2im7NRMDN0sG/nWfks/vFDeH5We6qa00mlvS4yLHmQBp1HkLWOhp1qA9YO64Al5zOP+YABHuhES0Bza541Shc2DkL8+ZKRr1OY041n8R0oR0Q9kxJxI0jTStX6ktxKDdtEnz/I/FAGRg2/iJPSUH7mS92zPl4JSNZIwf6uwvXFvj42DncwI6h1omic6qu2eiftK34FDcAqxkOSdOhtt+Oh2rt22llYRiN6zZxFQW/pdN8oVXwp+zanC+GnVPyQy979Nj94VTbkIDTt/9mKGGfqPF0F6HtF1x5gT2z6OavJRGE8yYvmvDk= dabos@DESKTOP-LD7OKSI",
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8zZrsKLL8BPxE+GIuDtzYgN6H+njp2JZfRfC2FLsNzfgRSOClvC58j2juLzfCvmL6L7Y1MQTJz8KNghV+9Jxvdj4DKbezKZs6430hFiRiW0mJO+4L62DY+14VQ016xyO1/KZck5iI1uOVAqSwAWI5SiFr/XFiB7zD3Y763Cu0pmkkOZm+HWv7MdOTqQo0Kx2MIhyG6PCRjzLfkeyuLbmlzpaqOtCNtrEIukuA0LqELO1Aqe1dQKSsq9dH75rZShg9qNOv69HunOuwFiUXpTz+xlTbG+P4S/PpPtktph/YNGwRfFlGzxiLgPo8Cxblfy50OvvpxxxEhLf/IeGXANEP damie@PCDAMS"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "source": "data:,k8s-node.genesis.workoutperf.com%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/profile.d/systemd-pager.sh",
+        "contents": {
+          "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/sysctl.d/20-silence-audit.conf",
+        "contents": {
+          "source": "data:,%23%20Raise%20console%20message%20logging%20level%20from%20DEBUG%20(7)%20to%20WARNING%20(4)%0A%23%20to%20hide%20audit%20messages%20from%20the%20interactive%20console%0Akernel.printk%3D4%0A"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "dropins": [
+          {
+            "contents": "[Service]\n# Override Execstart in main unit\nExecStart=\n# Add new Execstart with `-` prefix to ignore failure`\nExecStart=-/usr/sbin/agetty --autologin core --noclear %I $TERM\n",
+            "name": "autologin-core.conf"
+          }
+        ],
+        "name": "serial-getty@ttyS0.service"
+      }
+    ]
+  }
+}

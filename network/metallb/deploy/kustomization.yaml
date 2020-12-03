@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- config.yaml
+- memberlist-secret.yaml
+- metallb.yaml
+#- raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+#- github.com/metallb/metallb/manifests?ref=v0.9.5

@@ -1,0 +1,40 @@
+variant: fcos
+version: 1.1.0
+passwd:
+  users:
+    - name: dabos
+      groups: [ sudo, wheel, docker ]
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIuNlHCCz2HHd+Uh0SrUGFgVcr4kG/t9BTdsIPpf/n6AvLKFFBobdBypJNuzLURFTBts2on7NdxTG8oldWshhQHUjeYnZW17qBto87kANHDT8w2/02JoWMbLmuek9xsMtPMwEDo/AFQPj6tOfFA39SvR/t7p3puAbgN5yYrCoFgVFgrT2elPYErOvlNcyQyNJcrDGmXNpndm2im7NRMDN0sG/nWfks/vFDeH5We6qa00mlvS4yLHmQBp1HkLWOhp1qA9YO64Al5zOP+YABHuhES0Bza541Shc2DkL8+ZKRr1OY041n8R0oR0Q9kxJxI0jTStX6ktxKDdtEnz/I/FAGRg2/iJPSUH7mS92zPl4JSNZIwf6uwvXFvj42DncwI6h1omic6qu2eiftK34FDcAqxkOSdOhtt+Oh2rt22llYRiN6zZxFQW/pdN8oVXwp+zanC+GnVPyQy979Nj94VTbkIDTt/9mKGGfqPF0F6HtF1x5gT2z6OavJRGE8yYvmvDk= dabos@DESKTOP-LD7OKSI
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8zZrsKLL8BPxE+GIuDtzYgN6H+njp2JZfRfC2FLsNzfgRSOClvC58j2juLzfCvmL6L7Y1MQTJz8KNghV+9Jxvdj4DKbezKZs6430hFiRiW0mJO+4L62DY+14VQ016xyO1/KZck5iI1uOVAqSwAWI5SiFr/XFiB7zD3Y763Cu0pmkkOZm+HWv7MdOTqQo0Kx2MIhyG6PCRjzLfkeyuLbmlzpaqOtCNtrEIukuA0LqELO1Aqe1dQKSsq9dH75rZShg9qNOv69HunOuwFiUXpTz+xlTbG+P4S/PpPtktph/YNGwRfFlGzxiLgPo8Cxblfy50OvvpxxxEhLf/IeGXANEP damie@PCDAMS
+systemd:
+  units:
+    - name: serial-getty@ttyS0.service
+      dropins:
+      - name: autologin-core.conf
+        contents: |
+          [Service]
+          # Override Execstart in main unit
+          ExecStart=
+          # Add new Execstart with `-` prefix to ignore failure`
+          ExecStart=-/usr/sbin/agetty --autologin core --noclear %I $TERM
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: |
+          k8s-node.genesis.workoutperf.com
+    - path: /etc/profile.d/systemd-pager.sh
+      mode: 0644
+      contents:
+        inline: |
+          # Tell systemd to not use a pager when printing information
+          export SYSTEMD_PAGER=cat
+    - path: /etc/sysctl.d/20-silence-audit.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Raise console message logging level from DEBUG (7) to WARNING (4)
+          # to hide audit messages from the interactive console
+          kernel.printk=4
