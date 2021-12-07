@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CNI_VERSION=${CNI_VERSION:-"v0.8.7"}
-CRICTL_VERSION=${CRICTL_VERSION:-"v1.19.0"}
+CNI_VERSION=${CNI_VERSION:-"v1.0.1"}
+CRICTL_VERSION=${CRICTL_VERSION:-"v1.22.0"}
 DOWNLOAD_DIR=${DOWNLOAD_DIR:-/usr/local/bin}
 
 sudo mkdir -p /opt/cni/bin
